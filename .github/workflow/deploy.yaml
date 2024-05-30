@@ -1,0 +1,52 @@
+name: VPS Deployment
+
+on:
+  push:
+    branches:
+      - main # Define the branch to trigger the workflow
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # Use Ubuntu as the runner environment
+
+    steps:
+      - name: Echo
+        run: |
+          echo ${{ vars.VPS_HOST }}
+          echo ${{ vars.VPS_USERNAME }}
+          # echo ${{ vars.VPS_PASSWORD }}  # Assuming SSH key authentication, no password needed
+
+      - name: SSH into VPS and Update Repository
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ vars.VPS_HOST }}
+          username: ${{ vars.VPS_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }} # Use GitHub secret containing SSH private key
+          port: 22
+          script: |
+            cd ${{ vars.VPS_WORKDIR}}
+            git fetch origin
+            git reset --hard origin/main  # Reset to the latest commit on 'main' branch
+
+      - name: Build and Run Docker Images
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ vars.VPS_HOST }}
+          username: ${{ vars.VPS_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }} # Use GitHub secret containing SSH private key
+          port: 22
+          script: |
+            cd ${{ vars.VPS_WORKDIR}}
+
+            # Stop and remove existing container if running
+            docker stop iris-mlops
+            docker rm iris-mlops
+
+            # Build Docker image from the updated repository
+            docker build -t iris-mlops .
+
+            # Run Docker container with port mapping
+            docker run -d --name iris-mlops -p 8001:8001 iris-mlops
+
+            # Clean up unused Docker images (optional, use with caution)
+            docker image prune -f
