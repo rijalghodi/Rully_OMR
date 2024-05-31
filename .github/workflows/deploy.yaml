@@ -59,6 +59,3 @@ jobs:
 
             # Run Docker container with port mapping
             docker run -d --name rully -p 8000:8000 rully
-
-            # Clean up unused Docker images (optional, use with caution)
-            docker image prune -f
