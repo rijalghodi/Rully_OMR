@@ -15,7 +15,7 @@ jobs:
           echo ${{ vars.VPS_HOST }}
           echo ${{ vars.VPS_USERNAME }}
 
-      - name: Update Repository in VPS
+      - name: Update Git Repository in VPS
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ vars.VPS_HOST }}
@@ -38,8 +38,21 @@ jobs:
             cd ${{ vars.VPS_WORKDIR}}
 
             # Stop and remove existing container if running
-            docker stop rully
-            docker rm rully
+            if docker ps -a --format '{{.Names}}' | grep -Eq "^rully$"; then
+                # If the container exists, stop and remove it
+                docker stop rully
+                docker rm rully
+            else
+                echo "Container 'rully' does not exist."
+            fi
+
+            # Check if the image exists
+            if docker images --format '{{.Repository}}:{{.Tag}}' | grep -Eq "^rully:"; then
+                # If the image exists, remove it
+                docker image rm rully
+            else
+                echo "Image 'rully' does not exist."
+            fi
 
             # Build Docker image from the updated repository
             docker build -t rully .
