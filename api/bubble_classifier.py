@@ -3,7 +3,7 @@ from utils import preprocess_bubble
 import onnxruntime as ort
 
 
-model_path = '../models/bubble_classification.onnx'
+model_path = '../models/bubble_classification-1.onnx'
 session = ort.InferenceSession(model_path)
 
 input_name = session.get_inputs()[0].name

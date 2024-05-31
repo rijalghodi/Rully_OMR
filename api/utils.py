@@ -45,9 +45,9 @@ def preprocess_bubble(img):
     ndarray: Thresholded image.
     """
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # Convert image to grayscale
-    img = cv2.GaussianBlur(img, (3, 3), 1)  # Apply Gaussian blur
-    img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
-                                   cv2.THRESH_BINARY, 225, 30)  # Apply adaptive thresholding
+    # img = cv2.GaussianBlur(img, (3, 3), 1)  # Apply Gaussian blur
+    # img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
+    #                                cv2.THRESH_BINARY, 225, 30)  # Apply adaptive thresholding
     img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)  # Convert image to bgr
     img = resize_with_padding(img, (224, 224))
     return img
