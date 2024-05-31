@@ -1,10 +1,11 @@
 FROM python:3.12-slim
 
-# Install dependencies including libglib2.0-0 for libgthread-2.0.so.0
-RUN apt-get install -y libgl1-mesa-glx libglib2.0-0
 
 # Set the working directory to /app
 WORKDIR /app
+
+# Install dependencies including libglib2.0-0 for libgthread-2.0.so.0
+RUN apt-get install -y libgl1-mesa-glx libglib2.0-0
 
 # Copy the current directory contents into the container at /app
 COPY . /app
