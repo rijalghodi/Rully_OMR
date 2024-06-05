@@ -1,7 +1,5 @@
 import numpy as np
-from utils import preprocess_bubble
 import onnxruntime as ort
-from PIL import Image
 
 
 model_path = '../models/base_bubble_classification.onnx'
