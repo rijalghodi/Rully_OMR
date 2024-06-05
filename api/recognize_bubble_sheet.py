@@ -1,5 +1,5 @@
 from constant import  ANSWER_MARKS, NUM_OPTIONS
-from utils import preprocess_sheet,  find_bubble_contours
+from utils import preprocess_sheet,  find_bubble_contours, preprocess_bubble
 import cv2
 from bubble_classifier import bubble_classifier
 
@@ -19,7 +19,8 @@ def recognize_bubble_sheet(img):
         w, h = min(w, img.shape[1] - x), min(h, img.shape[0] - y)
         cropped_image = img[y:y+h, x:x+w]
 
-        result = bubble_classifier(cropped_image)
+        preprocessed_bubble = preprocess_bubble(cropped_image)
+        result = bubble_classifier(preprocessed_bubble)
 
         if result["label"] != "invalid":
             bubble_results.append({"label": result["label"], "result": result, "x": x, "y": y, "w": w, "h": h})

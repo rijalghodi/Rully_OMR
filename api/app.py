@@ -6,6 +6,7 @@ from pydantic import BaseModel
 from typing import List
 import cv2
 import numpy as np
+from utils import preprocess_bubble
 from bubble_classifier import bubble_classifier
 from recognize_bubble_sheet import recognize_bubble_sheet as recognize_bubble_sheet_util
 from typing import Annotated
@@ -56,12 +57,23 @@ async def classify_bubble_answer(file: UploadFile = File(...)):
         # Read the uploaded image file as bytes
         image_bytes = await file.read()
 
+
         # Convert bytes to a openCV image
+        
+        # Convert bytes to a NumPy array
         nparr = np.frombuffer(image_bytes, np.uint8)
+
+        # Decode the image using OpenCV
         img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
         if img is None:
             raise HTTPException(status_code=400, detail="Invalid image file")
+   
+          # Preprocess the image
+        img = preprocess_bubble(img)
+
+        # Ensure the input data type matches the model's expectation (float32)
+        img = img.astype(np.float32)
 
         # Classify Bubble
         result = bubble_classifier(img)

@@ -44,12 +44,24 @@ def preprocess_bubble(img):
     Returns:
     ndarray: Thresholded image.
     """
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # Convert image to grayscale
-    img = cv2.GaussianBlur(img, (3, 3), 1)  # Apply Gaussian blur
-    img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
-                                   cv2.THRESH_BINARY, 225, 30)  # Apply adaptive thresholding
+     # Grayscale the image
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) 
+
+    # TODO: Ucomment this when the dataset is preprocessed usign gaussian blur and adaptive threshold
+    # img = cv2.GaussianBlur(img, (3, 3), 1)  
+    # img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
+    #                                cv2.THRESH_BINARY, 225, 30)  
     img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)  # Convert image to bgr
-    img = resize_with_padding(img, (224, 224))
+
+    #Resize image with padding
+    img = resize_with_padding(img)
+    
+    # Add batch dimension
+    img = np.expand_dims(img, axis=0)
+
+    # Normalize the image
+    img = img.astype('float32')
+    img /= 255.0
     return img
 
 def preprocess_sheet(img):
@@ -63,10 +75,11 @@ def preprocess_sheet(img):
     Returns:
     ndarray: Thresholded image.
     """
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # Convert image to grayscale
-    img = cv2.GaussianBlur(img, (3, 3), 1)  # Apply Gaussian blur
+    # Preprocess the image: grayscale, gaussian blur, and adaptive thresholding
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  
+    img = cv2.GaussianBlur(img, (3, 3), 1)  
     img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
-                                   cv2.THRESH_BINARY, 225, 20)  # Apply adaptive thresholding
+                                   cv2.THRESH_BINARY, 225, 20)  
     # img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)  # Convert image to grayscale
     return img
 
