@@ -58,4 +58,4 @@ jobs:
             docker build -t rully .
 
             # Run Docker container with port mapping
-            docker run -d --name rully -p 8000:8000 rully
+            docker run -d --name rully -p 10000:10000 rully

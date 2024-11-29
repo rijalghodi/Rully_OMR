@@ -16,8 +16,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Set the working directory to /app/api
 WORKDIR /app/api
 
-# Make port 8000 available to the world outside this container
-EXPOSE 8000
+# Make port 10000 available to the world outside this container
+EXPOSE 10000
 
 # Run uvicorn server
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "10000"]

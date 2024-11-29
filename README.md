@@ -29,7 +29,7 @@ Rully is AI-powered bubble sheet grader capable of accurately and efficiently gr
    uvicorn app:app --reload
    ```
 
-3. Open browser `localhost:8000` to see the API server documentation
+3. Open browser `localhost:10000` to see the API server documentation
 
 ## How to Run with Docker?
 
@@ -41,6 +41,6 @@ Rully is AI-powered bubble sheet grader capable of accurately and efficiently gr
    ```
 4. Run container
    ```bash
-   docker run -t rully -p 8000:8000 rully
+   docker run -t rully -p 10000:10000 rully
    ```
-5. Open browser `localhost:8000` to see the API server documentation
+5. Open browser `localhost:10000` to see the API server documentation
